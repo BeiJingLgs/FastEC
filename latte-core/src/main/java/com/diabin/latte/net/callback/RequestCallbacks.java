@@ -23,7 +23,7 @@ public final class RequestCallbacks implements Callback<String> {
     private final IFailure FAILURE;
     private final IError ERROR;
     private final LoaderStyle LOADER_STYLE;
-    private static final Handler HANDLER = new Handler();
+    private static final Handler HANDLER = Latte.getHandler();
 
     public RequestCallbacks(IRequest request, ISuccess success, IFailure failure, IError error, LoaderStyle style) {
         this.REQUEST = request;
@@ -68,8 +68,8 @@ public final class RequestCallbacks implements Callback<String> {
             HANDLER.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    LatteLoader.stopLoading();
                     RestCreator.getParams().clear();
+                    LatteLoader.stopLoading();
                 }
             }, delayed);
         }

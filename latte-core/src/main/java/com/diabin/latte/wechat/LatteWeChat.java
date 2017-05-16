@@ -13,18 +13,18 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  * Created by 傅令杰 on 2017/4/25
  */
 
-public final class LatteWeChat {
+public class LatteWeChat {
+    public static final String APP_ID = Latte.getConfiguration(ConfigKeys.WE_CHAT_APP_ID);
+    public static final String APP_SECRET = Latte.getConfiguration(ConfigKeys.WE_CHAT_APP_SECRET);
     private final IWXAPI WXAPI;
-    static final String APP_ID = Latte.getConfiguration(ConfigKeys.WE_CHAT_APP_ID);
-    static final String APP_SECRET = Latte.getConfiguration(ConfigKeys.WE_CHAT_APP_SECRET);
-    private IWeChatSignInCallback mSignInCallBack = null;
+    private IWeChatSignInCallback mSignInCallback = null;
 
     private static final class Holder {
-        private static final LatteWeChat LATTE_WE_CHAT = new LatteWeChat();
+        private static final LatteWeChat INSTANCE = new LatteWeChat();
     }
 
     public static LatteWeChat getInstance() {
-        return Holder.LATTE_WE_CHAT;
+        return Holder.INSTANCE;
     }
 
     private LatteWeChat() {
@@ -33,17 +33,17 @@ public final class LatteWeChat {
         WXAPI.registerApp(APP_ID);
     }
 
-    public LatteWeChat onSignInSuccess(IWeChatSignInCallback callback) {
-        this.mSignInCallBack = callback;
+    public final IWXAPI getWXAPI() {
+        return WXAPI;
+    }
+
+    public LatteWeChat onSignSuccess(IWeChatSignInCallback callback) {
+        this.mSignInCallback = callback;
         return this;
     }
 
-    public IWeChatSignInCallback getSignInCallBack() {
-        return mSignInCallBack;
-    }
-
-    public IWXAPI getIWXAPI() {
-        return WXAPI;
+    public IWeChatSignInCallback getSignInCallback() {
+        return mSignInCallback;
     }
 
     public final void signIn() {
@@ -52,4 +52,5 @@ public final class LatteWeChat {
         req.state = "random_state";
         WXAPI.sendReq(req);
     }
+
 }

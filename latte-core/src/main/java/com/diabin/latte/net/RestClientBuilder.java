@@ -20,8 +20,8 @@ import okhttp3.RequestBody;
 
 public final class RestClientBuilder {
 
-    private String mUrl = null;
     private static final WeakHashMap<String, Object> PARAMS = RestCreator.getParams();
+    private String mUrl = null;
     private IRequest mIRequest = null;
     private ISuccess mISuccess = null;
     private IFailure mIFailure = null;

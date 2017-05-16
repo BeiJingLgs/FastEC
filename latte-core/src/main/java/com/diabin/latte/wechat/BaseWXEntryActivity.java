@@ -12,19 +12,20 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 /**
- * Created by apefu on 16/6/22
+ * Created by 傅令杰 on 2017/4/25
  */
+
 public abstract class BaseWXEntryActivity extends BaseWXActivity {
 
-    //用户登录成功后的回调
-    protected abstract void handleOnLogin(String userInfo);
+    //用户登录成功后回调
+    protected abstract void onSignInSuccess(String userInfo);
 
-    // 微信发送请求到第三方应用时，会回调到该方法
+    //微信发送请求到第三方应用后的回调
     @Override
     public void onReq(BaseReq baseReq) {
     }
 
-    // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
+    //第三方应用发送请求到微信后的回调
     @Override
     public void onResp(BaseResp baseResp) {
 
@@ -39,84 +40,60 @@ public abstract class BaseWXEntryActivity extends BaseWXActivity {
                 .append(code)
                 .append("&grant_type=authorization_code");
 
-        LatteLogger.d("onResp", authUrl);
-
+        LatteLogger.d("authUrl", authUrl.toString());
         getAuth(authUrl.toString());
     }
 
-    /**
-     * {
-     * "access_token":"ACCESS_TOKEN",
-     * "expires_in":7200,
-     * "refresh_token":"REFRESH_TOKEN",
-     * "openid":"OPENID",
-     * "scope":"SCOPE"
-     * }
-     */
     private void getAuth(String authUrl) {
-
-        RestClient.builder()
+        RestClient
+                .builder()
                 .url(authUrl)
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
 
-                        final   JSONObject jsonObject = JSON.parseObject(response);
-                        final  String access_token = jsonObject.getString("access_token");
-                        final   String openid = jsonObject.getString("openid");
+                        final JSONObject authObj = JSON.parseObject(response);
+                        final String accessToken = authObj.getString("access_token");
+                        final String openId = authObj.getString("openid");
 
-                        final   StringBuilder userInfoUrl = new StringBuilder();
+                        final StringBuilder userInfoUrl = new StringBuilder();
                         userInfoUrl
                                 .append("https://api.weixin.qq.com/sns/userinfo?access_token=")
-                                .append(access_token).append("&openid=")
-                                .append(openid)
+                                .append(accessToken)
+                                .append("&openid=")
+                                .append(openId)
                                 .append("&lang=")
                                 .append("zh_CN");
 
-                        LatteLogger.d("getAuth", userInfoUrl);
-
+                        LatteLogger.d("userInfoUrl", userInfoUrl.toString());
                         getUserInfo(userInfoUrl.toString());
+
                     }
                 })
                 .build()
                 .get();
     }
 
-    /**
-     * {
-     * "openid":"OPENID",
-     * "nickname":"NICKNAME",
-     * "sex":1,
-     * "province":"PROVINCE",
-     * "city":"CITY",
-     * "country":"COUNTRY",
-     * "headimgurl": "http://wx.qlogo.cn/mmopen/...",
-     * "privilege":[
-     * "PRIVILEGE1",
-     * "PRIVILEGE2"
-     * ],
-     * "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
-     * }
-     */
     private void getUserInfo(String userInfoUrl) {
-
-        RestClient.builder()
+        RestClient
+                .builder()
                 .url(userInfoUrl)
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
-
-                        handleOnLogin(response);
-                    }
-                })
-                .error(new IError() {
-                    @Override
-                    public void onError(int code, String msg) {
+                        onSignInSuccess(response);
                     }
                 })
                 .failure(new IFailure() {
                     @Override
                     public void onFailure() {
+
+                    }
+                })
+                .error(new IError() {
+                    @Override
+                    public void onError(int code, String msg) {
+
                     }
                 })
                 .build()

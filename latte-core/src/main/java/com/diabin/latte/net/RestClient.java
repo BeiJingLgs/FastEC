@@ -27,8 +27,8 @@ import retrofit2.Callback;
 
 public final class RestClient {
 
-    private final String URL;
     private static final WeakHashMap<String, Object> PARAMS = RestCreator.getParams();
+    private final String URL;
     private final IRequest REQUEST;
     private final String DOWNLOAD_DIR;
     private final String EXTENSION;

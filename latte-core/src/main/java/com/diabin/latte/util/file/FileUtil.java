@@ -97,7 +97,7 @@ public final class FileUtil {
         String suffix = "";
         final File file = new File(filePath);
         final String name = file.getName();
-        final int idx = name.lastIndexOf(".");
+        final int idx = name.lastIndexOf('.');
         if (idx > 0) {
             suffix = name.substring(idx + 1);
         }

@@ -18,7 +18,7 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <!--透明层-->
+    <!--透明Activity-->
     <style name="Theme.AppCompat.Translucent">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

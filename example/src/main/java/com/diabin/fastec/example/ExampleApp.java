@@ -1,6 +1,6 @@
 package com.diabin.fastec.example;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.diabin.latte.app.Latte;
 import com.diabin.latte.ec.database.DatabaseManager;
@@ -11,7 +11,8 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 /**
  * Created by 傅令杰 on 2017/3/29
  */
-public class ExampleApp extends Application {
+public class ExampleApp extends MultiDexApplication {
+
 
     @Override
     public void onCreate() {
