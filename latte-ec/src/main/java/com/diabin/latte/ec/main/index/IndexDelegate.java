@@ -5,22 +5,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.diabin.latte.delegates.bottom.BottomItemDelegate;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
-import com.diabin.latte.net.RestClient;
-import com.diabin.latte.net.callback.ISuccess;
-import com.diabin.latte.ui.recycler.MultipleFields;
-import com.diabin.latte.ui.recycler.MultipleItemEntity;
 import com.diabin.latte.ui.refresh.RefreshHandler;
 import com.joanzapata.iconify.widget.IconTextView;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -45,21 +39,7 @@ public class IndexDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
-        mRefreshHandler = new RefreshHandler(mRefreshLayout);
-        RestClient.builder()
-                .url("index.php")
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        final IndexDataConverter converter = new IndexDataConverter();
-                        converter.setJsonData(response);
-                        final ArrayList<MultipleItemEntity> list = converter.convert();
-                        final String image = list.get(1).getField(MultipleFields.IMAGE_URL);
-                        Toast.makeText(getContext(), image, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build()
-                .get();
+        mRefreshHandler = RefreshHandler.create(mRefreshLayout, mRecyclerView, new IndexDataConverter());
     }
 
     private void initRefreshLayout() {
@@ -71,10 +51,16 @@ public class IndexDelegate extends BottomItemDelegate {
         mRefreshLayout.setProgressViewOffset(true, 120, 300);
     }
 
+    private void initRecyclerView() {
+        final GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+        mRecyclerView.setLayoutManager(manager);
+    }
+
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         initRefreshLayout();
+        initRecyclerView();
         mRefreshHandler.firstPage("index.php");
     }
 

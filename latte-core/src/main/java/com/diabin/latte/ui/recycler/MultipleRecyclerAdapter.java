@@ -47,7 +47,7 @@ public class MultipleRecyclerAdapter extends
         addItemType(ItemType.TEXT, R.layout.item_multiple_text);
         addItemType(ItemType.IMAGE, R.layout.item_multiple_image);
         addItemType(ItemType.TEXT_IMAGE, R.layout.item_multiple_image_text);
-        addItemType(ItemType.TEXT_IMAGE, R.layout.item_multiple_banner);
+        addItemType(ItemType.BANNER, R.layout.item_multiple_banner);
         //设置宽度监听
         setSpanSizeLookup(this);
         openLoadAnimation();
