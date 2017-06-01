@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.diabin.latte.activities.ProxyActivity;
 import com.diabin.latte.app.Latte;
 import com.diabin.latte.delegates.LatteDelegate;
-import com.diabin.latte.ec.launcher.LauncherDelegate;
 import com.diabin.latte.ec.main.EcBottomDelegate;
 import com.diabin.latte.ec.sign.ISignListener;
 import com.diabin.latte.ec.sign.SignInDelegate;
@@ -31,7 +30,7 @@ public class ExampleActivity extends ProxyActivity implements
 
     @Override
     public LatteDelegate setRootDelegate() {
-        return new LauncherDelegate();
+        return new EcBottomDelegate();
     }
 
     @Override

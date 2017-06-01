@@ -4,8 +4,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.2'
-        classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.6.0'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
     }
 }
 
