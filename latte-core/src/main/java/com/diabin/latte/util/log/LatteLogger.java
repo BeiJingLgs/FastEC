@@ -30,6 +30,12 @@ public final class LatteLogger {
         }
     }
 
+    public static void d(Object message) {
+        if (LEVEL <= DEBUG) {
+            Logger.d(message);
+        }
+    }
+
     public static void i(String tag, String message) {
         if (LEVEL <= INFO) {
             Logger.t(tag).i(message);
