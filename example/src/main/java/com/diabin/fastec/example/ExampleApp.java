@@ -22,7 +22,7 @@ public class ExampleApp extends MultiDexApplication {
                 .withIcon(new FontEcModule())
                 .withLoaderDelayed(1000)
                 .withApiHost("http://192.168.31.80:8080/RestServer/api/")
-                .withInterceptor(new DebugInterceptor("test", com.diabin.fastec.example.R.raw.test))
+                .withInterceptor(new DebugInterceptor("test", R.raw.test))
                 .withWeChatAppId("wxfcdcecd9df8e0faa")
                 .withWeChatAppSecret("a0560f75335b06e3ebea70f29ff219bf")
                 .configure();
