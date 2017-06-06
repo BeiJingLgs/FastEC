@@ -82,16 +82,13 @@ public class SortRecyclerAdapter extends MultipleRecyclerAdapter {
         }
     }
 
-    /**
-     * 点击左侧显示右侧不同的ContentDelegate
-     */
-    private void showContent(int contnetId) {
-        final ContentDelegate delegate = ContentDelegate.newInstance(contnetId);
+    private void showContent(int contentId) {
+        final ContentDelegate delegate = ContentDelegate.newInstance(contentId);
         switchContent(delegate);
     }
 
     private void switchContent(ContentDelegate delegate) {
-        final LatteDelegate contentDelegate = DELEGATE.findFragment(ContentDelegate.class);
+        final LatteDelegate contentDelegate = DELEGATE.findChildFragment(ContentDelegate.class);
         if (contentDelegate != null) {
             contentDelegate.replaceFragment(delegate, false);
         }
