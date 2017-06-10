@@ -3,6 +3,7 @@ package com.diabin.fastec.example;
 import android.support.multidex.MultiDexApplication;
 
 import com.diabin.latte.app.Latte;
+import com.diabin.fastec.example.event.TestEvent;
 import com.diabin.latte.ec.database.DatabaseManager;
 import com.diabin.latte.ec.icon.FontEcModule;
 import com.diabin.latte.net.interceptors.DebugInterceptor;
@@ -25,6 +26,8 @@ public class ExampleApp extends MultiDexApplication {
                 .withInterceptor(new DebugInterceptor("test", R.raw.test))
                 .withWeChatAppId("wxfcdcecd9df8e0faa")
                 .withWeChatAppSecret("a0560f75335b06e3ebea70f29ff219bf")
+                .withJavascriptInterface("latte")
+                .withWebEvent("test", new TestEvent())
                 .configure();
 //        initStetho();
         DatabaseManager.getInstance().init(this);
