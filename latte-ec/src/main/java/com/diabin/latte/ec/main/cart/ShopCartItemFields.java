@@ -4,5 +4,7 @@ enum ShopCartItemFields {
     TITLE,
     DESC,
     COUNT,
-    PRICE
+    PRICE,
+    IS_SELECTED,
+    POSITION
 }
