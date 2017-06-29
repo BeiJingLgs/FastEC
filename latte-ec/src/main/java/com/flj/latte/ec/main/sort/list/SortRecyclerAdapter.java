@@ -5,8 +5,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
-import com.flj.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.R;
+import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.ec.main.sort.SortDelegate;
 import com.flj.latte.ec.main.sort.content.ContentDelegate;
 import com.flj.latte.ui.recycler.ItemType;
@@ -16,6 +16,8 @@ import com.flj.latte.ui.recycler.MultipleRecyclerAdapter;
 import com.flj.latte.ui.recycler.MultipleViewHolder;
 
 import java.util.List;
+
+import me.yokeyword.fragmentation.SupportHelper;
 
 /**
  * Created by 傅令杰
@@ -88,9 +90,10 @@ public class SortRecyclerAdapter extends MultipleRecyclerAdapter {
     }
 
     private void switchContent(ContentDelegate delegate) {
-        final LatteDelegate contentDelegate = DELEGATE.findChildFragment(ContentDelegate.class);
+        final LatteDelegate contentDelegate =
+                SupportHelper.findFragment(DELEGATE.getChildFragmentManager(), ContentDelegate.class);
         if (contentDelegate != null) {
-            contentDelegate.replaceFragment(delegate, false);
+            contentDelegate.getSupportDelegate().replaceFragment(delegate, false);
         }
     }
 }
