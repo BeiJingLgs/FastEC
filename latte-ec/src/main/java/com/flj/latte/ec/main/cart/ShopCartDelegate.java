@@ -12,12 +12,16 @@ import android.support.v7.widget.ViewStubCompat;
 import android.view.View;
 import android.widget.Toast;
 
-import com.flj.latte.delegates.bottom.BottomItemDelegate;
+import com.alibaba.fastjson.JSON;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
+import com.flj.latte.delegates.bottom.BottomItemDelegate;
+import com.flj.latte.ec.pay.FastPay;
+import com.flj.latte.ec.pay.IAlPayResultListener;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.ui.recycler.MultipleItemEntity;
+import com.flj.latte.util.log.LatteLogger;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -31,7 +35,7 @@ import butterknife.OnClick;
  * Created by 傅令杰
  */
 
-public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, ICartItemListener {
+public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, ICartItemListener, IAlPayResultListener {
 
     private ShopCartAdapter mAdapter = null;
     //购物车数量标记
@@ -104,7 +108,7 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
 
     @OnClick(R2.id.tv_shop_cart_pay)
     void onClickPay() {
-
+        createOrder();
     }
 
     //创建订单，注意，和支付是没有关系的
@@ -126,6 +130,12 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
                     @Override
                     public void onSuccess(String response) {
                         //进行具体的支付
+                        LatteLogger.d("ORDER", response);
+                        final int orderId = JSON.parseObject(response).getInteger("result");
+                        FastPay.create(ShopCartDelegate.this)
+                                .setPayResultListener(ShopCartDelegate.this)
+                                .setOrderId(orderId)
+                                .beginPayDialog();
                     }
                 })
                 .build()
@@ -193,5 +203,30 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
     public void onItemClick(double itemTotalPrice) {
         final double price = mAdapter.getTotalPrice();
         mTvTotalPrice.setText(String.valueOf(price));
+    }
+
+    @Override
+    public void onPaySuccess() {
+
+    }
+
+    @Override
+    public void onPaying() {
+
+    }
+
+    @Override
+    public void onPayFail() {
+
+    }
+
+    @Override
+    public void onPayCancel() {
+
+    }
+
+    @Override
+    public void onPayConnectError() {
+
     }
 }
