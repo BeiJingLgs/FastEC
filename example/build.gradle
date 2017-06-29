@@ -29,7 +29,7 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile project(':latte-ec')
-    compile project(':latte-annotations')
+    provided project(':latte-annotations')
     annotationProcessor project(':latte-compiler')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 }

@@ -30,7 +30,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':latte-core')
     //RecyclerView依赖
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.20'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
     //RecyclerView 分割线
     compile 'com.choices.divider:RecyclerView_Divider:1.0.0'
     //图片处理
