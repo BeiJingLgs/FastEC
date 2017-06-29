@@ -1,7 +1,7 @@
 package com.diabin.fastec.example.generators;
 
-import com.diabin.latte.annotations.AppRegisterGenerator;
-import com.diabin.latte.wechat.templates.AppRegisterTemplate;
+import com.flj.latte.annotations.AppRegisterGenerator;
+import com.flj.latte.wechat.templates.AppRegisterTemplate;
 
 /**
  * Created by 傅令杰 on 2017/4/22

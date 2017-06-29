@@ -3,7 +3,7 @@ package com.diabin.fastec.example.event;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.diabin.latte.delegates.web.event.Event;
+import com.flj.latte.delegates.web.event.Event;
 
 /**
  * Created by 傅令杰

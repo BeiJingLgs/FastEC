@@ -2,11 +2,11 @@ package com.diabin.fastec.example;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.diabin.latte.app.Latte;
+import com.flj.latte.app.Latte;
 import com.diabin.fastec.example.event.TestEvent;
-import com.diabin.latte.ec.database.DatabaseManager;
-import com.diabin.latte.ec.icon.FontEcModule;
-import com.diabin.latte.net.interceptors.DebugInterceptor;
+import com.flj.latte.ec.database.DatabaseManager;
+import com.flj.latte.ec.icon.FontEcModule;
+import com.flj.latte.net.interceptors.DebugInterceptor;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 /**

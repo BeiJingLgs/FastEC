@@ -1,7 +1,7 @@
 package com.diabin.fastec.example.generators;
 
-import com.diabin.latte.annotations.EntryGenerator;
-import com.diabin.latte.wechat.templates.WXEntryTemplate;
+import com.flj.latte.annotations.EntryGenerator;
+import com.flj.latte.wechat.templates.WXEntryTemplate;
 
 /**
  * Created by 傅令杰 on 2017/4/22
