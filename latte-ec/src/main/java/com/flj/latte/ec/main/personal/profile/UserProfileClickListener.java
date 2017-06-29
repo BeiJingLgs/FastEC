@@ -4,13 +4,18 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 import com.diabin.latte.ec.R;
 import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.ec.main.personal.list.ListBean;
+import com.flj.latte.net.RestClient;
+import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.ui.date.DateDialogUtil;
 import com.flj.latte.util.callback.CallbackManager;
 import com.flj.latte.util.callback.CallbackType;
@@ -23,11 +28,11 @@ import com.flj.latte.util.log.LatteLogger;
 
 public class UserProfileClickListener extends SimpleClickListener {
 
-    private final LatteDelegate DELEGATE;
+    private final UserProfileDelegate DELEGATE;
 
     private String[] mGenders = new String[]{"男", "女", "保密"};
 
-    public UserProfileClickListener(LatteDelegate DELEGATE) {
+    public UserProfileClickListener(UserProfileDelegate DELEGATE) {
         this.DELEGATE = DELEGATE;
     }
 
@@ -43,6 +48,40 @@ public class UserProfileClickListener extends SimpleClickListener {
                             @Override
                             public void executeCallback(Uri args) {
                                 LatteLogger.d("ON_CROP", args);
+                                final ImageView avatar = (ImageView) view.findViewById(R.id.img_arrow_avatar);
+                                Glide.with(DELEGATE)
+                                        .load(args)
+                                        .into(avatar);
+
+                                RestClient.builder()
+                                        .url(UploadConfig.UPLOAD_IMG)
+                                        .loader(DELEGATE.getContext())
+                                        .file(args.getPath())
+                                        .success(new ISuccess() {
+                                            @Override
+                                            public void onSuccess(String response) {
+                                                LatteLogger.d("ON_CROP_UPLOAD", response);
+                                                final String path = JSON.parseObject(response).getJSONObject("result")
+                                                        .getString("path");
+
+                                                //通知服务器更新信息
+                                                RestClient.builder()
+                                                        .url("user_profile.php")
+                                                        .params("avatar", path)
+                                                        .loader(DELEGATE.getContext())
+                                                        .success(new ISuccess() {
+                                                            @Override
+                                                            public void onSuccess(String response) {
+                                                                //获取更新后的用户信息，然后更新本地数据库
+                                                                //没有本地数据的APP，每次打开APP都请求API，获取信息
+                                                            }
+                                                        })
+                                                        .build()
+                                                        .post();
+                                            }
+                                        })
+                                        .build()
+                                        .upload();
                             }
                         });
                 DELEGATE.startCameraWithCheck();
