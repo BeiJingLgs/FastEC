@@ -2,12 +2,14 @@ package com.diabin.fastec.example;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.flj.latte.app.Latte;
 import com.diabin.fastec.example.event.TestEvent;
+import com.flj.latte.app.Latte;
 import com.flj.latte.ec.database.DatabaseManager;
 import com.flj.latte.ec.icon.FontEcModule;
 import com.flj.latte.net.interceptors.DebugInterceptor;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by 傅令杰 on 2017/3/29
@@ -31,6 +33,10 @@ public class ExampleApp extends MultiDexApplication {
                 .configure();
 //        initStetho();
         DatabaseManager.getInstance().init(this);
+
+        //开启极光推送
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
 //    private void initStetho() {

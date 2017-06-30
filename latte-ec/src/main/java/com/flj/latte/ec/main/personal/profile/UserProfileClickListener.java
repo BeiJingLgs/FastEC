@@ -39,7 +39,7 @@ public class UserProfileClickListener extends SimpleClickListener {
     @Override
     public void onItemClick(final BaseQuickAdapter adapter, final View view, int position) {
         final ListBean bean = (ListBean) baseQuickAdapter.getData().get(position);
-        final int id = bean.getmId();
+        final int id = bean.getId();
         switch (id) {
             case 1:
                 //开始照相机或选择图片
@@ -87,7 +87,7 @@ public class UserProfileClickListener extends SimpleClickListener {
                 DELEGATE.startCameraWithCheck();
                 break;
             case 2:
-                final LatteDelegate nameDelegate = bean.getmDelegate();
+                final LatteDelegate nameDelegate = bean.getDelegate();
                 DELEGATE.getSupportDelegate().start(nameDelegate);
                 break;
             case 3:

@@ -32,12 +32,12 @@ public class ListAdapter extends BaseMultiItemQuickAdapter<ListBean, BaseViewHol
     protected void convert(BaseViewHolder helper, ListBean item) {
         switch (helper.getItemViewType()) {
             case ListItemType.ITEM_NORMAL:
-                helper.setText(R.id.tv_arrow_text, item.getmText());
-                helper.setText(R.id.tv_arrow_value, item.getmValue());
+                helper.setText(R.id.tv_arrow_text, item.getText());
+                helper.setText(R.id.tv_arrow_value, item.getValue());
                 break;
             case ListItemType.ITEM_AVATAR:
                 Glide.with(mContext)
-                        .load(item.getmImageUrl())
+                        .load(item.getImageUrl())
                         .apply(OPTIONS)
                         .into((ImageView) helper.getView(R.id.img_arrow_avatar));
                 break;
