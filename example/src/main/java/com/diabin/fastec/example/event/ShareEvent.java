@@ -17,7 +17,7 @@ public class ShareEvent extends Event {
     @Override
     public String execute(String params) {
 
-        LatteLogger.d("ShareEvent", params);
+        LatteLogger.json("ShareEvent", params);
 
         final JSONObject object = JSON.parseObject(params).getJSONObject("params");
         final String title = object.getString("title");
