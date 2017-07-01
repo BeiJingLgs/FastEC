@@ -3,6 +3,7 @@ package com.diabin.fastec.example;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
 
+import com.diabin.fastec.example.event.ShareEvent;
 import com.diabin.fastec.example.event.TestEvent;
 import com.flj.latte.app.Latte;
 import com.flj.latte.ec.database.DatabaseManager;
@@ -34,6 +35,7 @@ public class ExampleApp extends MultiDexApplication {
                 .withWeChatAppSecret("a0560f75335b06e3ebea70f29ff219bf")
                 .withJavascriptInterface("latte")
                 .withWebEvent("test", new TestEvent())
+                .withWebEvent("share", new ShareEvent())
                 .configure();
 //        initStetho();
         DatabaseManager.getInstance().init(this);

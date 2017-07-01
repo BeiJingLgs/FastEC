@@ -3,14 +3,14 @@ $(function () {
         var json = {
             action: "share",
             params: {
-                imageUrl:"",
-                url:"",
+                imageUrl:"http://i9.qhimg.com/t017d891ca365ef60b5.jpg",
+                url:"https://www.baidu.com",
                 title:"标题",
                 text:"描述"
             }
         };
 
-        FastEC.event(JSON.stringify(json));
+        latte.event(JSON.stringify(json));
 
     });
 
@@ -20,7 +20,7 @@ $(function () {
                 action: "comment"
             };
 
-            FastEC.event(JSON.stringify(json));
+            latte.event(JSON.stringify(json));
 
         });
 });
