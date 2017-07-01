@@ -10,16 +10,21 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
-import com.flj.latte.delegates.bottom.BottomItemDelegate;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
+import com.flj.latte.delegates.bottom.BottomItemDelegate;
 import com.flj.latte.ec.main.EcBottomDelegate;
 import com.flj.latte.ui.recycler.BaseDecoration;
 import com.flj.latte.ui.refresh.RefreshHandler;
+import com.flj.latte.util.callback.CallbackManager;
+import com.flj.latte.util.callback.CallbackType;
+import com.flj.latte.util.callback.IGlobalCallback;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by 傅令杰
@@ -40,9 +45,21 @@ public class IndexDelegate extends BottomItemDelegate {
 
     private RefreshHandler mRefreshHandler = null;
 
+    @OnClick(R2.id.icon_index_scan)
+    void onClickScanQrCode() {
+        startScanWithCheck(this.getParentDelegate());
+    }
+
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         mRefreshHandler = RefreshHandler.create(mRefreshLayout, mRecyclerView, new IndexDataConverter());
+        CallbackManager.getInstance()
+                .addCallback(CallbackType.ON_SCAN, new IGlobalCallback<String>() {
+                    @Override
+                    public void executeCallback(@Nullable String args) {
+                        Toast.makeText(getContext(), "得到的二维码是" + args, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void initRefreshLayout() {
