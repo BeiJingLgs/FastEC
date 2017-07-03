@@ -23,31 +23,30 @@ import com.flj.latte.ui.R;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by 傅令杰
  */
 
-public class AutoPhotoLayout extends LinearLayoutCompat {
+public final class AutoPhotoLayout extends LinearLayoutCompat {
 
     private int mCurrentNum = 0;
-    private int mMaxNum = 0;
-    private int mMaxLineNum = 0;
+    private final int mMaxNum;
+    private final int mMaxLineNum;
     private IconTextView mIconAdd = null;
     private LayoutParams mParams = null;
     //要删除的图片ID
     private int mDeleteId = 0;
     private AppCompatImageView mTargetImageVew = null;
-    private int mImageMargin = 0;
+    private final int mImageMargin;
     private LatteDelegate mDelegate = null;
-    private List<View> mLineViews = null;
+    private ArrayList<View> mLineViews = null;
     private AlertDialog mTargetDialog = null;
     private static final String ICON_TEXT = "{fa-plus}";
-    private float mIconSize = 0;
+    private final float mIconSize;
 
-    private static final List<List<View>> ALL_VIEWS = new ArrayList<>();
-    private static final List<Integer> LINE_HEIGHTS = new ArrayList<>();
+    private final ArrayList<ArrayList<View>> ALL_VIEWS = new ArrayList<>();
+    private final ArrayList<Integer> LINE_HEIGHTS = new ArrayList<>();
 
     //防止多次的测量和布局过程
     private boolean mIsOnceInitOnMeasure = false;

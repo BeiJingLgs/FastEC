@@ -49,6 +49,12 @@ public class MultipleRecyclerAdapter extends
         return new MultipleRecyclerAdapter(converter.convert());
     }
 
+    public void refresh(List<MultipleItemEntity> data) {
+        getData().clear();
+        setNewData(data);
+        notifyDataSetChanged();
+    }
+
     private void init() {
         //设置不同的item布局
         addItemType(ItemType.TEXT, R.layout.item_multiple_text);
