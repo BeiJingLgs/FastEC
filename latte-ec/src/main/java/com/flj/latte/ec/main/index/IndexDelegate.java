@@ -16,6 +16,7 @@ import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.bottom.BottomItemDelegate;
 import com.flj.latte.ec.main.EcBottomDelegate;
+import com.flj.latte.ec.main.index.search.SearchDelegate;
 import com.flj.latte.ui.recycler.BaseDecoration;
 import com.flj.latte.ui.refresh.RefreshHandler;
 import com.flj.latte.util.callback.CallbackManager;
@@ -30,7 +31,7 @@ import butterknife.OnClick;
  * Created by 傅令杰
  */
 
-public class IndexDelegate extends BottomItemDelegate {
+public class IndexDelegate extends BottomItemDelegate implements View.OnFocusChangeListener {
 
     @BindView(R2.id.rv_index)
     RecyclerView mRecyclerView = null;
@@ -50,6 +51,7 @@ public class IndexDelegate extends BottomItemDelegate {
         startScanWithCheck(this.getParentDelegate());
     }
 
+
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         mRefreshHandler = RefreshHandler.create(mRefreshLayout, mRecyclerView, new IndexDataConverter());
@@ -60,6 +62,7 @@ public class IndexDelegate extends BottomItemDelegate {
                         Toast.makeText(getContext(), "得到的二维码是" + args, Toast.LENGTH_LONG).show();
                     }
                 });
+        mSearchView.setOnFocusChangeListener(this);
     }
 
     private void initRefreshLayout() {
@@ -91,5 +94,12 @@ public class IndexDelegate extends BottomItemDelegate {
     @Override
     public Object setLayout() {
         return R.layout.delegate_index;
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            getParentDelegate().getSupportDelegate().start(new SearchDelegate());
+        }
     }
 }

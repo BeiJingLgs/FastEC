@@ -69,4 +69,15 @@ public final class LattePreference {
                 .getBoolean(key, false);
     }
 
+    public static void addCustomAppProfile(String key, String val) {
+        getAppPreference()
+                .edit()
+                .putString(key, val)
+                .apply();
+    }
+
+    public static String getCustomAppProfile(String key) {
+        return getAppPreference().getString(key, "");
+    }
+
 }
