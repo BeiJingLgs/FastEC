@@ -12,10 +12,10 @@ import java.util.LinkedHashMap;
 
 public class MultipleItemEntity implements MultiItemEntity {
 
-    private final ReferenceQueue<LinkedHashMap<Object, Object>> ITEM_QUENE = new ReferenceQueue<>();
+    private final ReferenceQueue<LinkedHashMap<Object, Object>> ITEM_QUEUE = new ReferenceQueue<>();
     private final LinkedHashMap<Object, Object> MULTIPLE_FIELDS = new LinkedHashMap<>();
     private final SoftReference<LinkedHashMap<Object, Object>> FIELDS_REFERENCE =
-            new SoftReference<>(MULTIPLE_FIELDS, ITEM_QUENE);
+            new SoftReference<>(MULTIPLE_FIELDS, ITEM_QUEUE);
 
     MultipleItemEntity(LinkedHashMap<Object, Object> fields) {
         FIELDS_REFERENCE.get().putAll(fields);

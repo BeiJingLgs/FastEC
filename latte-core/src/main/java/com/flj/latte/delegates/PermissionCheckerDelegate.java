@@ -107,7 +107,7 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
                     if (data != null) {
                         final Uri pickPath = data.getData();
                         //从相册选择后需要有个路径存放剪裁过的图片
-                        final String pickCropPath = LatteCamera.creareCropFile().getPath();
+                        final String pickCropPath = LatteCamera.createCropFile().getPath();
                         UCrop.of(pickPath, Uri.parse(pickCropPath))
                                 .withMaxResultSize(400, 400)
                                 .start(getContext(), this);

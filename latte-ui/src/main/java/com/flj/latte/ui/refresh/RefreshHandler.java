@@ -11,6 +11,7 @@ import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.ui.recycler.DataConverter;
 import com.flj.latte.ui.recycler.MultipleRecyclerAdapter;
+import com.flj.latte.util.log.LatteLogger;
 
 /**
  * Created by 傅令杰
@@ -49,7 +50,7 @@ public class RefreshHandler implements
                 //进行一些网络请求
                 REFRESH_LAYOUT.setRefreshing(false);
             }
-        }, 2000);
+        }, 1000);
     }
 
     public void firstPage(String url) {
@@ -90,6 +91,8 @@ public class RefreshHandler implements
                             .success(new ISuccess() {
                                 @Override
                                 public void onSuccess(String response) {
+                                    LatteLogger.json("paging", response);
+                                    CONVERTER.clearData();
                                     mAdapter.addData(CONVERTER.setJsonData(response).convert());
                                     //累加数量
                                     BEAN.setCurrentCount(mAdapter.getData().size());

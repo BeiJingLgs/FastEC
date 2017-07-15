@@ -9,6 +9,7 @@ import com.flj.latte.app.Latte;
 import com.flj.latte.ec.database.DatabaseManager;
 import com.flj.latte.ec.icon.FontEcModule;
 import com.flj.latte.net.interceptors.DebugInterceptor;
+import com.flj.latte.net.rx.AddCookieInterceptor;
 import com.flj.latte.util.callback.CallbackManager;
 import com.flj.latte.util.callback.CallbackType;
 import com.flj.latte.util.callback.IGlobalCallback;
@@ -31,11 +32,14 @@ public class ExampleApp extends MultiDexApplication {
                 .withLoaderDelayed(1000)
                 .withApiHost("http://192.168.31.80:8080/RestServer/api/")
                 .withInterceptor(new DebugInterceptor("test", R.raw.test))
-                .withWeChatAppId("wxfcdcecd9df8e0faa")
-                .withWeChatAppSecret("a0560f75335b06e3ebea70f29ff219bf")
+                .withWeChatAppId("你的微信AppKey")
+                .withWeChatAppSecret("你的微信AppSecret")
                 .withJavascriptInterface("latte")
                 .withWebEvent("test", new TestEvent())
                 .withWebEvent("share", new ShareEvent())
+                //添加Cookie同步拦截器
+                .withWebHost("https://www.baidu.com/")
+                .withInterceptor(new AddCookieInterceptor())
                 .configure();
 //        initStetho();
         DatabaseManager.getInstance().init(this);

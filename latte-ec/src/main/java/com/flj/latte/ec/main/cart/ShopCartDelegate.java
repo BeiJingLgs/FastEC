@@ -113,15 +113,9 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
 
     //创建订单，注意，和支付是没有关系的
     private void createOrder() {
-        final String orderUrl = "http://app.api.zanzuanshi.com/api/v1/peyment";
+        final String orderUrl = "你的生成订单的API";
         final WeakHashMap<String, Object> orderParams = new WeakHashMap<>();
-        orderParams.put("userid", 264392);
-        orderParams.put("amount", 0.01);
-        orderParams.put("comment", "测试支付");
-        orderParams.put("type", 1);
-        orderParams.put("ordertype", 0);
-        orderParams.put("isanonymous", true);
-        orderParams.put("followeduser", 0);
+       //加入你的参数
         RestClient.builder()
                 .url(orderUrl)
                 .loader(getContext())

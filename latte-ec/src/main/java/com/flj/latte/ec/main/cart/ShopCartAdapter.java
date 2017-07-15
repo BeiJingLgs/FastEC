@@ -36,7 +36,7 @@ public final class ShopCartAdapter extends MultipleRecyclerAdapter {
             .centerCrop()
             .dontAnimate();
 
-    protected ShopCartAdapter(List<MultipleItemEntity> data) {
+    ShopCartAdapter(List<MultipleItemEntity> data) {
         super(data);
         //初始化总价
         for (MultipleItemEntity entity : data) {

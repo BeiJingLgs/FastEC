@@ -31,14 +31,14 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by apefu on 16/7/18
+ * Created by 傅令杰
  */
 public final class FileUtil {
 
     //格式化的模板
-    public static final String TIME_FORMAT = "_yyyyMMdd_HHmmss";
+    private static final String TIME_FORMAT = "_yyyyMMdd_HHmmss";
 
-    public static final String SDCARD_DIR =
+    private static final String SDCARD_DIR =
             Environment.getExternalStorageDirectory().getPath();
 
     //默认本地上传图片目录
@@ -53,7 +53,7 @@ public final class FileUtil {
     public static final String CAMERA_PHOTO_DIR =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getPath() + "/Camera/";
 
-    public static String getTimeFormatName(String timeFormatHeader) {
+    private static String getTimeFormatName(String timeFormatHeader) {
         final Date date = new Date(System.currentTimeMillis());
         //必须要加上单引号
         final SimpleDateFormat dateFormat = new SimpleDateFormat("'" + timeFormatHeader + "'" + TIME_FORMAT, Locale.getDefault());
@@ -70,7 +70,7 @@ public final class FileUtil {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static File createDir(String sdcardDirName) {
+    private static File createDir(String sdcardDirName) {
         //拼接成SD卡中完整的dir
         final String dir = SDCARD_DIR + "/" + sdcardDirName + "/";
         final File fileDir = new File(dir);
@@ -85,7 +85,7 @@ public final class FileUtil {
         return new File(createDir(sdcardDirName), fileName);
     }
 
-    public static File createFileByTime(String sdcardDirName, String timeFormatHeader, String extension) {
+    private static File createFileByTime(String sdcardDirName, String timeFormatHeader, String extension) {
         final String fileName = getFileNameByTime(timeFormatHeader, extension);
         return createFile(sdcardDirName, fileName);
     }

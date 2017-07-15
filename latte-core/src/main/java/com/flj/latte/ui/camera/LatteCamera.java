@@ -12,7 +12,7 @@ import com.flj.latte.util.file.FileUtil;
 
 public class LatteCamera {
 
-    public static Uri creareCropFile() {
+    public static Uri createCropFile() {
         return Uri.parse
                 (FileUtil.createFile("crop_image",
                         FileUtil.getFileNameByTime("IMG", "jpg")).getPath());

@@ -76,8 +76,8 @@ public class FastPay implements View.OnClickListener {
         return this;
     }
 
-    private final void alPay(int orderId) {
-        final String singUrl = "http://app.api.zanzuanshi.com/api/v1/alipay/appSign?id=" + orderId;
+    private void alPay(int orderId) {
+        final String singUrl = "你的服务端支付地址" + orderId;
         //获取签名字符串
         RestClient.builder()
                 .url(singUrl)
@@ -95,10 +95,10 @@ public class FastPay implements View.OnClickListener {
                 .post();
     }
 
-    private void weChatPay(int orderId){
+    private void weChatPay(int orderId) {
         LatteLoader.stopLoading();
-        final String weChatPrePayUrl = "http://app.api.zanzuanshi.com/api/v1/wxpay/prepay/app/" + orderId;
-        LatteLogger.d("WX_PAY",weChatPrePayUrl);
+        final String weChatPrePayUrl = "你的服务端微信预支付地址" + orderId;
+        LatteLogger.d("WX_PAY", weChatPrePayUrl);
 
         final IWXAPI iwxapi = LatteWeChat.getInstance().getWXAPI();
         final String appId = Latte.getConfiguration(ConfigKeys.WE_CHAT_APP_ID);
@@ -117,7 +117,7 @@ public class FastPay implements View.OnClickListener {
                         final String nonceStr = result.getString("noncestr");
                         final String paySign = result.getString("sign");
 
-                        final PayReq payReq  = new PayReq();
+                        final PayReq payReq = new PayReq();
                         payReq.appId = appId;
                         payReq.prepayId = prepayId;
                         payReq.partnerId = partnerId;
