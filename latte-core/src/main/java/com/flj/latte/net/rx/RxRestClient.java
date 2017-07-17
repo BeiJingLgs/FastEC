@@ -8,7 +8,6 @@ import com.flj.latte.ui.loader.LatteLoader;
 import com.flj.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
-import java.util.Map;
 import java.util.WeakHashMap;
 
 import io.reactivex.Observable;
@@ -23,7 +22,7 @@ import okhttp3.ResponseBody;
 
 public final class RxRestClient {
 
-    private static final WeakHashMap<String, Object> PARAMS = RestCreator.getParams();
+    private final WeakHashMap<String, Object> PARAMS;
     private final String URL;
     private final RequestBody BODY;
     private final LoaderStyle LOADER_STYLE;
@@ -31,13 +30,13 @@ public final class RxRestClient {
     private final Context CONTEXT;
 
     RxRestClient(String url,
-                 Map<String, Object> params,
+                 WeakHashMap<String, Object> params,
                  RequestBody body,
                  File file,
                  Context context,
                  LoaderStyle loaderStyle) {
         this.URL = url;
-        PARAMS.putAll(params);
+        this.PARAMS = params;
         this.BODY = body;
         this.FILE = file;
         this.CONTEXT = context;

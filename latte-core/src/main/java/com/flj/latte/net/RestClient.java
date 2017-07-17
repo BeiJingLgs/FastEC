@@ -12,7 +12,6 @@ import com.flj.latte.ui.loader.LatteLoader;
 import com.flj.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
-import java.util.Map;
 import java.util.WeakHashMap;
 
 import okhttp3.MediaType;
@@ -27,7 +26,7 @@ import retrofit2.Callback;
 
 public final class RestClient {
 
-    private static final WeakHashMap<String, Object> PARAMS = RestCreator.getParams();
+    private final WeakHashMap<String, Object> PARAMS;
     private final String URL;
     private final IRequest REQUEST;
     private final String DOWNLOAD_DIR;
@@ -42,7 +41,7 @@ public final class RestClient {
     private final Context CONTEXT;
 
     RestClient(String url,
-               Map<String, Object> params,
+               WeakHashMap<String, Object> params,
                String downloadDir,
                String extension,
                String name,
@@ -55,7 +54,7 @@ public final class RestClient {
                Context context,
                LoaderStyle loaderStyle) {
         this.URL = url;
-        PARAMS.putAll(params);
+        this.PARAMS = params;
         this.DOWNLOAD_DIR = downloadDir;
         this.EXTENSION = extension;
         this.NAME = name;
@@ -165,7 +164,7 @@ public final class RestClient {
     }
 
     public final void download() {
-        new DownloadHandler(URL, REQUEST, DOWNLOAD_DIR, EXTENSION, NAME,
+        new DownloadHandler(URL, PARAMS,REQUEST, DOWNLOAD_DIR, EXTENSION, NAME,
                 SUCCESS, FAILURE, ERROR)
                 .handleDownload();
     }

@@ -2,7 +2,6 @@ package com.flj.latte.net.rx;
 
 import android.content.Context;
 
-import com.flj.latte.net.RestCreator;
 import com.flj.latte.ui.loader.LoaderStyle;
 
 import java.io.File;
@@ -17,7 +16,7 @@ import okhttp3.RequestBody;
 
 public final class RxRestClientBuilder {
 
-    private static final WeakHashMap<String, Object> PARAMS = RestCreator.getParams();
+    private final WeakHashMap<String, Object> PARAMS = new WeakHashMap<>();
     private String mUrl = null;
     private RequestBody mBody = null;
     private Context mContext = null;

@@ -5,7 +5,6 @@ import com.flj.latte.app.Latte;
 import com.flj.latte.net.rx.RxRestService;
 
 import java.util.ArrayList;
-import java.util.WeakHashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -20,16 +19,16 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public final class RestCreator {
 
-    /**
-     * 参数容器
-     */
-    private static final class ParamsHolder {
-        private static final WeakHashMap<String, Object> PARAMS = new WeakHashMap<>();
-    }
-
-    public static WeakHashMap<String, Object> getParams() {
-        return ParamsHolder.PARAMS;
-    }
+//    /**
+//     * 参数容器
+//     */
+//    private static final class ParamsHolder {
+//        private static final WeakHashMap<String, Object> PARAMS = new WeakHashMap<>();
+//    }
+//
+//    public static WeakHashMap<String, Object> getParams() {
+//        return ParamsHolder.PARAMS;
+//    }
 
     /**
      * 构建OkHttp

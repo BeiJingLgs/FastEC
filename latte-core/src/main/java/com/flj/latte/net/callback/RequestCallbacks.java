@@ -1,10 +1,10 @@
 package com.flj.latte.net.callback;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
 import com.flj.latte.app.ConfigKeys;
 import com.flj.latte.app.Latte;
-import com.flj.latte.net.RestCreator;
 import com.flj.latte.ui.loader.LatteLoader;
 import com.flj.latte.ui.loader.LoaderStyle;
 
@@ -34,7 +34,7 @@ public final class RequestCallbacks implements Callback<String> {
     }
 
     @Override
-    public void onResponse(Call<String> call, Response<String> response) {
+    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
         if (response.isSuccessful()) {
             if (call.isExecuted()) {
                 if (SUCCESS != null) {
@@ -51,7 +51,7 @@ public final class RequestCallbacks implements Callback<String> {
     }
 
     @Override
-    public void onFailure(Call<String> call, Throwable t) {
+    public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
         if (FAILURE != null) {
             FAILURE.onFailure();
         }
@@ -68,7 +68,6 @@ public final class RequestCallbacks implements Callback<String> {
             HANDLER.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    RestCreator.getParams().clear();
                     LatteLoader.stopLoading();
                 }
             }, delayed);
