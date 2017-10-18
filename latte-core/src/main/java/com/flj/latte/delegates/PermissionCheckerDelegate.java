@@ -39,7 +39,7 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
 
     //这个是真正调用的方法
     public void startCameraWithCheck() {
-        PermissionCheckerDelegatePermissionsDispatcher.startCameraWithCheck(this);
+        PermissionCheckerDelegatePermissionsDispatcher.startCameraWithPermissionCheck(this);
     }
 
     //扫描二维码(不直接调用)
@@ -49,7 +49,7 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
     }
 
     public void startScanWithCheck(BaseDelegate delegate) {
-        PermissionCheckerDelegatePermissionsDispatcher.startScanWithCheck(this, delegate);
+        PermissionCheckerDelegatePermissionsDispatcher.startScanWithPermissionCheck(this, delegate);
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)

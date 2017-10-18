@@ -1,5 +1,6 @@
 package com.flj.latte.app;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
@@ -24,7 +25,7 @@ public final class Latte {
         return getConfigurator().getConfiguration(key);
     }
 
-    public static Context getApplicationContext() {
+    public static Application getApplicationContext() {
         return getConfiguration(ConfigKeys.APPLICATION_CONTEXT);
     }
 

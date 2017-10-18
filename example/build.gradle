@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.diabin.fastec.example"
         minSdkVersion 19
@@ -42,7 +42,7 @@ dependencies {
     compile project(':latte-ec')
     provided project(':latte-annotations')
     annotationProcessor project(':latte-compiler')
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-    compile 'cn.jiguang.sdk:jpush:3.0.1'
-    compile 'cn.jiguang.sdk:jcore:1.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'cn.jiguang.sdk:jpush:3.0.8'
+    compile 'cn.jiguang.sdk:jcore:1.1.6'
 }

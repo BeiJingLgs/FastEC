@@ -74,7 +74,7 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
         mSearchView.setOnFocusChangeListener(this);
 
 //        onCallRxGet();
-        onCallRxRestClient();
+//        onCallRxRestClient();
     }
 
     //TODO:测试方法，没啥卵用
@@ -111,6 +111,8 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
 
     //TODO:测试方法，没啥卵用X2
     private void onCallRxRestClient(){
+
+
         final String url = "index.php";
         RxRestClient.builder()
                 .url(url)
