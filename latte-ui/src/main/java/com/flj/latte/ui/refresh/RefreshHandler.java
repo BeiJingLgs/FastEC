@@ -54,6 +54,7 @@ public class RefreshHandler implements
     }
 
     public void firstPage(String url) {
+        LatteLogger.d("IUDHAS", url);
         BEAN.setDelayed(1000);
         RestClient.builder()
                 .url(url)

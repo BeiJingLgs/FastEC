@@ -53,13 +53,7 @@ public final class Configurator {
     }
 
     public final Configurator withApiHost(String host) {
-        if (!host.endsWith("/")) {
-            throw new RuntimeException("host must end with '/' ! ");
-        } else if (!host.startsWith("http://") || !host.startsWith("https://")) {
-            throw new RuntimeException("host must start with http:// or https:// !");
-        } else {
-            LATTE_CONFIGS.put(ConfigKeys.API_HOST, host);
-        }
+        LATTE_CONFIGS.put(ConfigKeys.API_HOST, host);
         return this;
     }
 

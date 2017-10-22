@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.bottom.BottomItemDelegate;
+import com.flj.latte.ec.main.EcBottomDelegate;
 import com.flj.latte.ec.pay.FastPay;
 import com.flj.latte.ec.pay.IAlPayResultListener;
 import com.flj.latte.net.RestClient;
@@ -115,7 +116,7 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
     private void createOrder() {
         final String orderUrl = "你的生成订单的API";
         final WeakHashMap<String, Object> orderParams = new WeakHashMap<>();
-       //加入你的参数
+        //加入你的参数
         RestClient.builder()
                 .url(orderUrl)
                 .loader(getContext())
@@ -148,6 +149,14 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getContext(), "你该购物啦！", Toast.LENGTH_SHORT).show();
+                    //切换到首页
+                    final int indexTab = 0;
+                    final EcBottomDelegate ecBottomDelegate = getParentDelegate();
+                    final BottomItemDelegate indexDelegate = ecBottomDelegate.getItemDelegates().get(indexTab);
+                    ecBottomDelegate
+                            .getSupportDelegate()
+                            .showHideFragment(indexDelegate, ShopCartDelegate.this);
+                    ecBottomDelegate.changeColor(indexTab);
                 }
             });
             mRecyclerView.setVisibility(View.GONE);

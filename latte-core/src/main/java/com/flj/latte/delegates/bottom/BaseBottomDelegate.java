@@ -41,6 +41,10 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
 
     public abstract LinkedHashMap<BottomTabBean, BottomItemDelegate> setItems(ItemBuilder builder);
 
+    public ArrayList<BottomItemDelegate> getItemDelegates() {
+        return ITEM_DELEGATES;
+    }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_bottom;
@@ -106,17 +110,21 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        final int tag = (int) v.getTag();
+    public void changeColor(int tabIndex) {
         resetColor();
-        final RelativeLayout item = (RelativeLayout) v;
+        final RelativeLayout item = (RelativeLayout) mBottomBar.getChildAt(tabIndex);
         final IconTextView itemIcon = (IconTextView) item.getChildAt(0);
         itemIcon.setTextColor(mClickedColor);
         final AppCompatTextView itemTitle = (AppCompatTextView) item.getChildAt(1);
         itemTitle.setTextColor(mClickedColor);
-        getSupportDelegate().showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
+    }
+
+    @Override
+    public void onClick(View v) {
+        final int tabIndex = (int) v.getTag();
+        changeColor(tabIndex);
+        getSupportDelegate().showHideFragment(ITEM_DELEGATES.get(tabIndex), ITEM_DELEGATES.get(mCurrentDelegate));
         //注意先后顺序
-        mCurrentDelegate = tag;
+        mCurrentDelegate = tabIndex;
     }
 }
