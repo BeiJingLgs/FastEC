@@ -30,7 +30,6 @@ public class ExampleActivity extends ProxyActivity implements
         }
         Latte.getConfigurator().withActivity(this);
         StatusBarCompat.translucentStatusBar(this, true);
-
     }
 
     @Override
