@@ -42,6 +42,7 @@ public class ExampleActivity extends ProxyActivity implements
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
+        //
     }
 
     @Override
