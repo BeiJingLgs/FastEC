@@ -35,6 +35,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Created by 傅令杰
@@ -110,7 +112,7 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
     }
 
     //TODO:测试方法，没啥卵用X2
-    private void onCallRxRestClient(){
+    private void onCallRxRestClient() {
 
 
         final String url = "index.php";
@@ -179,5 +181,10 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
         if (hasFocus) {
             getParentDelegate().getSupportDelegate().start(new SearchDelegate());
         }
+    }
+
+    @Override
+    public FragmentAnimator onCreateFragmentAnimator() {
+        return new DefaultHorizontalAnimator();
     }
 }

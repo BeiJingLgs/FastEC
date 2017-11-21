@@ -68,22 +68,24 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
     }
 
     private void showRationaleDialog(final PermissionRequest request) {
-        new AlertDialog.Builder(getContext())
-                .setPositiveButton("同意使用", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.proceed();
-                    }
-                })
-                .setNegativeButton("拒绝使用", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.cancel();
-                    }
-                })
-                .setCancelable(false)
-                .setMessage("权限管理")
-                .show();
+        if (getContext() != null) {
+            new AlertDialog.Builder(getContext())
+                    .setPositiveButton("同意使用", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            request.proceed();
+                        }
+                    })
+                    .setNegativeButton("拒绝使用", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            request.cancel();
+                        }
+                    })
+                    .setCancelable(false)
+                    .setMessage("权限管理")
+                    .show();
+        }
     }
 
     @Override
@@ -99,25 +101,28 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
             switch (requestCode) {
                 case RequestCodes.TAKE_PHOTO:
                     final Uri resultUri = CameraImageBean.getInstance().getPath();
-                    UCrop.of(resultUri, resultUri)
-                            .withMaxResultSize(400, 400)
-                            .start(getContext(), this);
+                    if (getContext() != null) {
+                        UCrop.of(resultUri, resultUri)
+                                .withMaxResultSize(400, 400)
+                                .start(getContext(), this);
+                    }
                     break;
                 case RequestCodes.PICK_PHOTO:
                     if (data != null) {
                         final Uri pickPath = data.getData();
                         //从相册选择后需要有个路径存放剪裁过的图片
                         final String pickCropPath = LatteCamera.createCropFile().getPath();
-                        UCrop.of(pickPath, Uri.parse(pickCropPath))
-                                .withMaxResultSize(400, 400)
-                                .start(getContext(), this);
+                        if (pickPath != null && getContext() != null) {
+                            UCrop.of(pickPath, Uri.parse(pickCropPath))
+                                    .withMaxResultSize(400, 400)
+                                    .start(getContext(), this);
+                        }
                     }
                     break;
                 case RequestCodes.CROP_PHOTO:
                     final Uri cropUri = UCrop.getOutput(data);
                     //拿到剪裁后的数据进行处理
-                    @SuppressWarnings("unchecked")
-                    final IGlobalCallback<Uri> callback = CallbackManager
+                    @SuppressWarnings("unchecked") final IGlobalCallback<Uri> callback = CallbackManager
                             .getInstance()
                             .getCallback(CallbackType.ON_CROP);
                     if (callback != null) {

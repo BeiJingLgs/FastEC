@@ -1,12 +1,11 @@
 package com.diabin.fastec.example;
 
+import android.app.Application;
 import android.support.annotation.Nullable;
-import android.support.multidex.MultiDexApplication;
 
 import com.diabin.fastec.example.event.ShareEvent;
 import com.diabin.fastec.example.event.TestEvent;
 import com.flj.latte.app.Latte;
-import com.flj.latte.ec.database.DatabaseManager;
 import com.flj.latte.ec.icon.FontEcModule;
 import com.flj.latte.net.interceptors.DebugInterceptor;
 import com.flj.latte.net.rx.AddCookieInterceptor;
@@ -20,8 +19,7 @@ import cn.jpush.android.api.JPushInterface;
 /**
  * Created by 傅令杰 on 2017/3/29
  */
-public class ExampleApp extends MultiDexApplication {
-
+public class ExampleApp extends Application {
 
     @Override
     public void onCreate() {
@@ -30,7 +28,7 @@ public class ExampleApp extends MultiDexApplication {
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
                 .withLoaderDelayed(1000)
-                .withApiHost("http://192.168.31.80:20003/api/")
+                .withApiHost("http://192.168.31.80:20002/api/")
                 .withInterceptor(new DebugInterceptor("test", R.raw.test))
                 .withWeChatAppId("你的微信AppKey")
                 .withWeChatAppSecret("你的微信AppSecret")
@@ -41,8 +39,6 @@ public class ExampleApp extends MultiDexApplication {
                 .withWebHost("https://www.baidu.com/")
                 .withInterceptor(new AddCookieInterceptor())
                 .configure();
-//        initStetho();
-        DatabaseManager.getInstance().init(this);
 
         //开启极光推送
         JPushInterface.setDebugMode(true);
@@ -69,11 +65,4 @@ public class ExampleApp extends MultiDexApplication {
                 });
     }
 
-//    private void initStetho() {
-//        Stetho.initialize(
-//                Stetho.newInitializerBuilder(this)
-//                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-//                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-//                        .build());
-//    }
 }
