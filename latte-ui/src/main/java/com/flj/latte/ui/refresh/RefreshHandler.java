@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flj.latte.app.Latte;
 import com.flj.latte.net.RestClient;
-import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.ui.recycler.DataConverter;
 import com.flj.latte.ui.recycler.MultipleRecyclerAdapter;
 import com.flj.latte.util.log.LatteLogger;
@@ -58,18 +57,15 @@ public class RefreshHandler implements
         BEAN.setDelayed(1000);
         RestClient.builder()
                 .url(url)
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        final JSONObject object = JSON.parseObject(response);
-                        BEAN.setTotal(object.getInteger("total"))
-                                .setPageSize(object.getInteger("page_size"));
-                        //设置Adapter
-                        mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response));
-                        mAdapter.setOnLoadMoreListener(RefreshHandler.this, RECYCLERVIEW);
-                        RECYCLERVIEW.setAdapter(mAdapter);
-                        BEAN.addIndex();
-                    }
+                .success(response -> {
+                    final JSONObject object = JSON.parseObject(response);
+                    BEAN.setTotal(object.getInteger("total"))
+                            .setPageSize(object.getInteger("page_size"));
+                    //设置Adapter
+                    mAdapter = MultipleRecyclerAdapter.create(CONVERTER.setJsonData(response));
+                    mAdapter.setOnLoadMoreListener(RefreshHandler.this, RECYCLERVIEW);
+                    RECYCLERVIEW.setAdapter(mAdapter);
+                    BEAN.addIndex();
                 })
                 .build()
                 .get();
@@ -89,17 +85,14 @@ public class RefreshHandler implements
                 public void run() {
                     RestClient.builder()
                             .url(url + index)
-                            .success(new ISuccess() {
-                                @Override
-                                public void onSuccess(String response) {
-                                    LatteLogger.json("paging", response);
-                                    CONVERTER.clearData();
-                                    mAdapter.addData(CONVERTER.setJsonData(response).convert());
-                                    //累加数量
-                                    BEAN.setCurrentCount(mAdapter.getData().size());
-                                    mAdapter.loadMoreComplete();
-                                    BEAN.addIndex();
-                                }
+                            .success(response -> {
+                                LatteLogger.json("paging", response);
+                                CONVERTER.clearData();
+                                mAdapter.addData(CONVERTER.setJsonData(response).convert());
+                                //累加数量
+                                BEAN.setCurrentCount(mAdapter.getData().size());
+                                mAdapter.loadMoreComplete();
+                                BEAN.addIndex();
                             })
                             .build()
                             .get();

@@ -1,5 +1,6 @@
 package com.flj.latte.ec.detail;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -25,10 +25,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.daimajia.androidanimations.library.YoYo;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.net.RestClient;
-import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.ui.animation.BezierAnimation;
 import com.flj.latte.ui.animation.BezierUtil;
 import com.flj.latte.ui.banner.HolderCreator;
@@ -39,8 +37,6 @@ import com.joanzapata.iconify.widget.IconTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
@@ -53,28 +49,13 @@ public class GoodsDetailDelegate extends LatteDelegate implements
         AppBarLayout.OnOffsetChangedListener,
         BezierUtil.AnimationListener {
 
-    @BindView(R2.id.goods_detail_toolbar)
-    Toolbar mToolbar = null;
-    @BindView(R2.id.tab_layout)
-    TabLayout mTabLayout = null;
-    @BindView(R2.id.view_pager)
-    ViewPager mViewPager = null;
-    @BindView(R2.id.detail_banner)
-    ConvenientBanner<String> mBanner = null;
-    @BindView(R2.id.collapsing_toolbar_detail)
-    CollapsingToolbarLayout mCollapsingToolbarLayout = null;
-    @BindView(R2.id.app_bar_detail)
-    AppBarLayout mAppBar = null;
+    private TabLayout mTabLayout = null;
+    private ViewPager mViewPager = null;
+    private ConvenientBanner<String> mBanner = null;
 
-    //底部
-    @BindView(R2.id.icon_favor)
-    IconTextView mIconFavor = null;
-    @BindView(R2.id.tv_shopping_cart_amount)
-    CircleTextView mCircleTextView = null;
-    @BindView(R2.id.rl_add_shop_cart)
-    RelativeLayout mRlAddShopCart = null;
-    @BindView(R2.id.icon_shop_cart)
-    IconTextView mIconShopCart = null;
+    private CircleTextView mCircleTextView = null;
+    private RelativeLayout mRlAddShopCart = null;
+    private IconTextView mIconShopCart = null;
 
     private static final String ARG_GOODS_ID = "ARG_GOODS_ID";
     private int mGoodsId = -1;
@@ -88,8 +69,16 @@ public class GoodsDetailDelegate extends LatteDelegate implements
             .dontAnimate()
             .override(100, 100);
 
-    @OnClick(R2.id.rl_add_shop_cart)
-    void onClickAddShopCart() {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final Bundle args = getArguments();
+        if (args != null) {
+            mGoodsId = args.getInt(ARG_GOODS_ID);
+        }
+    }
+
+    private void onClickAddShopCart() {
         final CircleImageView animImg = new CircleImageView(getContext());
         Glide.with(this)
                 .load(mGoodsThumbUrl)
@@ -114,21 +103,25 @@ public class GoodsDetailDelegate extends LatteDelegate implements
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        final Bundle args = getArguments();
-        if (args != null) {
-            mGoodsId = args.getInt(ARG_GOODS_ID);
-        }
-    }
-
-    @Override
     public Object setLayout() {
         return R.layout.delegate_goods_detail;
     }
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mTabLayout = $(R.id.tab_layout);
+        mViewPager = $(R.id.view_pager);
+        mBanner = $(R.id.detail_banner);
+        final CollapsingToolbarLayout mCollapsingToolbarLayout = $(R.id.collapsing_toolbar_detail);
+        final AppBarLayout mAppBar = $(R.id.app_bar_detail);
+
+        //底部
+        mCircleTextView = $(R.id.tv_shopping_cart_amount);
+        mRlAddShopCart = $(R.id.rl_add_shop_cart);
+        mIconShopCart = $(R.id.icon_shop_cart);
+
+        $(R.id.rl_add_shop_cart).setOnClickListener(view -> onClickAddShopCart());
+
         mCollapsingToolbarLayout.setContentScrimColor(Color.WHITE);
         mAppBar.addOnOffsetChangedListener(this);
         mCircleTextView.setCircleBackground(Color.RED);
@@ -143,8 +136,11 @@ public class GoodsDetailDelegate extends LatteDelegate implements
 
     private void initTabLayout() {
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-        mTabLayout.setSelectedTabIndicatorColor
-                (ContextCompat.getColor(getContext(), R.color.app_main));
+        final Context context = getContext();
+        if (context != null) {
+            mTabLayout.setSelectedTabIndicatorColor
+                    (ContextCompat.getColor(context, R.color.app_main));
+        }
         mTabLayout.setTabTextColors(ColorStateList.valueOf(Color.BLACK));
         mTabLayout.setBackgroundColor(Color.WHITE);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -155,16 +151,13 @@ public class GoodsDetailDelegate extends LatteDelegate implements
                 .url("goods_detail.php")
                 .params("goods_id", mGoodsId)
                 .loader(getContext())
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        final JSONObject data =
-                                JSON.parseObject(response).getJSONObject("data");
-                        initBanner(data);
-                        initGoodsInfo(data);
-                        initPager(data);
-                        setShopCartCount(data);
-                    }
+                .success(response -> {
+                    final JSONObject data =
+                            JSON.parseObject(response).getJSONObject("data");
+                    initBanner(data);
+                    initGoodsInfo(data);
+                    initPager(data);
+                    setShopCartCount(data);
                 })
                 .build()
                 .get();
@@ -209,16 +202,13 @@ public class GoodsDetailDelegate extends LatteDelegate implements
                 .playOn(mIconShopCart);
         RestClient.builder()
                 .url("add_shop_cart_count.php")
-                .success(new ISuccess() {
-                    @Override
-                    public void onSuccess(String response) {
-                        LatteLogger.json("ADD", response);
-                        final boolean isAdded = JSON.parseObject(response).getBoolean("data");
-                        if (isAdded) {
-                            mShopCount++;
-                            mCircleTextView.setVisibility(View.VISIBLE);
-                            mCircleTextView.setText(String.valueOf(mShopCount));
-                        }
+                .success(response -> {
+                    LatteLogger.json("ADD", response);
+                    final boolean isAdded = JSON.parseObject(response).getBoolean("data");
+                    if (isAdded) {
+                        mShopCount++;
+                        mCircleTextView.setVisibility(View.VISIBLE);
+                        mCircleTextView.setText(String.valueOf(mShopCount));
                     }
                 })
                 .params("count", mShopCount)

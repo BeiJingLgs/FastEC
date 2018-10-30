@@ -1,5 +1,6 @@
 package com.flj.latte.ec.main.index;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.bottom.BottomItemDelegate;
 import com.flj.latte.ec.main.EcBottomDelegate;
 import com.flj.latte.ec.main.index.search.SearchDelegate;
@@ -23,20 +23,15 @@ import com.flj.latte.ui.recycler.BaseDecoration;
 import com.flj.latte.ui.refresh.RefreshHandler;
 import com.flj.latte.util.callback.CallbackManager;
 import com.flj.latte.util.callback.CallbackType;
-import com.flj.latte.util.callback.IGlobalCallback;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.WeakHashMap;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Created by 傅令杰
@@ -44,39 +39,36 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public class IndexDelegate extends BottomItemDelegate implements View.OnFocusChangeListener {
 
-    @BindView(R2.id.rv_index)
-    RecyclerView mRecyclerView = null;
-    @BindView(R2.id.srl_index)
-    SwipeRefreshLayout mRefreshLayout = null;
-    @BindView(R2.id.tb_index)
-    Toolbar mToolbar = null;
-    @BindView(R2.id.icon_index_scan)
-    IconTextView mIconScan = null;
-    @BindView(R2.id.et_search_view)
-    AppCompatEditText mSearchView = null;
+    private RecyclerView mRecyclerView = null;
+    private SwipeRefreshLayout mRefreshLayout = null;
 
     private RefreshHandler mRefreshHandler = null;
 
-    @OnClick(R2.id.icon_index_scan)
-    void onClickScanQrCode() {
-        startScanWithCheck(this.getParentDelegate());
-    }
-
-
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mRecyclerView = $(R.id.rv_index);
+        mRefreshLayout = $(R.id.srl_index);
+
+        final IconTextView mIconScan = $(R.id.icon_index_scan);
+        final AppCompatEditText mSearchView = $(R.id.et_search_view);
+
+        $(R.id.icon_index_scan).setOnClickListener(view -> startScanWithCheck(getParentDelegate()));
+
         mRefreshHandler = RefreshHandler.create(mRefreshLayout, mRecyclerView, new IndexDataConverter());
         CallbackManager.getInstance()
-                .addCallback(CallbackType.ON_SCAN, new IGlobalCallback<String>() {
-                    @Override
-                    public void executeCallback(@Nullable String args) {
-                        Toast.makeText(getContext(), "得到的二维码是" + args, Toast.LENGTH_LONG).show();
-                    }
-                });
+                .addCallback(CallbackType.ON_SCAN, args ->
+                        Toast.makeText(getContext(), "得到的二维码是" + args, Toast.LENGTH_LONG).show());
         mSearchView.setOnFocusChangeListener(this);
 
 //        onCallRxGet();
 //        onCallRxRestClient();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final Toolbar toolbar = view.findViewById(R.id.tb_index);
+        toolbar.getBackground().setAlpha(0);
     }
 
     //TODO:测试方法，没啥卵用
@@ -156,9 +148,12 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
 
     private void initRecyclerView() {
         final GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+        final Context context = getContext();
         mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.addItemDecoration
-                (BaseDecoration.create(ContextCompat.getColor(getContext(), R.color.app_background), 5));
+        if (context != null) {
+            mRecyclerView.addItemDecoration
+                    (BaseDecoration.create(ContextCompat.getColor(context, R.color.app_background), 5));
+        }
         final EcBottomDelegate ecBottomDelegate = getParentDelegate();
         mRecyclerView.addOnItemTouchListener(IndexItemClickListener.create(ecBottomDelegate));
     }
@@ -179,12 +174,7 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            getParentDelegate().getSupportDelegate().start(new SearchDelegate());
+            getParentDelegate().start(new SearchDelegate());
         }
-    }
-
-    @Override
-    public FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultHorizontalAnimator();
     }
 }

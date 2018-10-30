@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.diabin.latte.R;
-import com.diabin.latte.R2;
 import com.flj.latte.delegates.LatteDelegate;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import butterknife.BindView;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -36,8 +34,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
     private int mIndexDelegate = 0;
     private int mClickedColor = Color.RED;
 
-    @BindView(R2.id.bottom_bar)
-    LinearLayoutCompat mBottomBar = null;
+    private LinearLayoutCompat mBottomBar = null;
 
     public abstract LinkedHashMap<BottomTabBean, BottomItemDelegate> setItems(ItemBuilder builder);
 
@@ -76,6 +73,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mBottomBar = $(R.id.bottom_bar);
         final int size = ITEMS.size();
         for (int i = 0; i < size; i++) {
             LayoutInflater.from(getContext()).inflate(R.layout.bottom_item_icon_text_layout, mBottomBar);

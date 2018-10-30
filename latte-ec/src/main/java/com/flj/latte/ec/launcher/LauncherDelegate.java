@@ -7,11 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
+import com.diabin.latte.ec.R;
 import com.flj.latte.app.AccountManager;
 import com.flj.latte.app.IUserChecker;
 import com.flj.latte.delegates.LatteDelegate;
-import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.ui.launcher.ILauncherListener;
 import com.flj.latte.ui.launcher.OnLauncherFinishTag;
 import com.flj.latte.ui.launcher.ScrollLauncherTag;
@@ -22,9 +21,6 @@ import com.flj.latte.util.timer.ITimerListener;
 import java.text.MessageFormat;
 import java.util.Timer;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 /**
  * Created by 傅令杰 on 2017/4/22
@@ -32,15 +28,12 @@ import butterknife.OnClick;
 
 public class LauncherDelegate extends LatteDelegate implements ITimerListener {
 
-    @BindView(R2.id.tv_launcher_timer)
-    AppCompatTextView mTvTimer = null;
-
+    private AppCompatTextView mTvTimer = null;
     private Timer mTimer = null;
     private int mCount = 5;
     private ILauncherListener mILauncherListener = null;
 
-    @OnClick(R2.id.tv_launcher_timer)
-    void onClickTimerView() {
+    private void onClickTimerView() {
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
@@ -70,6 +63,14 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
         initTimer();
+        mTvTimer = $(R.id.tv_launcher_timer);
+        $(R.id.tv_launcher_timer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickTimerView();
+            }
+        });
+
     }
 
     //判断是否显示滑动启动页

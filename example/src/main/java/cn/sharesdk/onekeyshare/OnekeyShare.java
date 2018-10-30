@@ -31,7 +31,7 @@ import static com.mob.tools.utils.BitmapHelper.captureView;
  * 通过不同的setter设置参数，然后调用{@link #show(Context)}方法启动快捷分享
  */
 public class OnekeyShare {
-    private HashMap<String, Object> params;
+    private  HashMap<String, Object> params;
 
     public OnekeyShare() {
         params = new HashMap<String, Object>();

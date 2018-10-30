@@ -42,7 +42,6 @@ public class ExampleActivity extends ProxyActivity implements
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
-        //
     }
 
     @Override
@@ -74,5 +73,10 @@ public class ExampleActivity extends ProxyActivity implements
             default:
                 break;
         }
+    }
+
+    @Override
+    public void post(Runnable runnable) {
+
     }
 }

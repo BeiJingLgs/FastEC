@@ -8,22 +8,15 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
-
-import butterknife.BindView;
 
 /**
  * Created by 傅令杰
  */
 
 public class AboutDelegate extends LatteDelegate {
-
-    @BindView(R2.id.tv_info)
-    AppCompatTextView mTextView = null;
-
 
     @Override
     public Object setLayout() {
@@ -32,6 +25,8 @@ public class AboutDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        final AppCompatTextView textView = $(R.id.tv_info);
+
         RestClient.builder()
                 .url("about.php")
                 .loader(getContext())
@@ -39,7 +34,7 @@ public class AboutDelegate extends LatteDelegate {
                     @Override
                     public void onSuccess(String response) {
                         final String info = JSON.parseObject(response).getString("data");
-                        mTextView.setText(info);
+                        textView.setText(info);
                     }
                 })
                 .build()

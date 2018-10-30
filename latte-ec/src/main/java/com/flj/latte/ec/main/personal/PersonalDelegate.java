@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.bottom.BottomItemDelegate;
 import com.flj.latte.ec.main.personal.address.AddressDelegate;
 import com.flj.latte.ec.main.personal.list.ListAdapter;
@@ -21,17 +20,11 @@ import com.flj.latte.ec.main.personal.settings.SettingsDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * Created by 傅令杰
  */
 
 public class PersonalDelegate extends BottomItemDelegate {
-
-    @BindView(R2.id.rv_personal_setting)
-    RecyclerView mRvSettings = null;
 
     public static final String ORDER_TYPE = "ORDER_TYPE";
     private Bundle mArgs = null;
@@ -41,14 +34,12 @@ public class PersonalDelegate extends BottomItemDelegate {
         return R.layout.delegate_personal;
     }
 
-    @OnClick(R2.id.tv_all_order)
-    void onClickAllOrder() {
+    private void onClickAllOrder() {
         mArgs.putString(ORDER_TYPE, "all");
         startOrderListByType();
     }
 
-    @OnClick(R2.id.img_user_avatar)
-    void onClickAvatar() {
+    private void onClickAvatar() {
         getParentDelegate().getSupportDelegate().start(new UserProfileDelegate());
     }
 
@@ -66,6 +57,20 @@ public class PersonalDelegate extends BottomItemDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+
+        final RecyclerView rvSettings = $(R.id.rv_personal_setting);
+        $(R.id.tv_all_order).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickAllOrder();
+            }
+        });
+        $(R.id.img_user_avatar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickAvatar();
+            }
+        });
 
         final ListBean address = new ListBean.Builder()
                 .setItemType(ListItemType.ITEM_NORMAL)
@@ -87,9 +92,9 @@ public class PersonalDelegate extends BottomItemDelegate {
 
         //设置RecyclerView
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        mRvSettings.setLayoutManager(manager);
+        rvSettings.setLayoutManager(manager);
         final ListAdapter adapter = new ListAdapter(data);
-        mRvSettings.setAdapter(adapter);
-        mRvSettings.addOnItemTouchListener(new PersonalClickListener(this));
+        rvSettings.setAdapter(adapter);
+        rvSettings.addOnItemTouchListener(new PersonalClickListener(this));
     }
 }

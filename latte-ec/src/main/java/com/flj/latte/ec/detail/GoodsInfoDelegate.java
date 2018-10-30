@@ -9,23 +9,13 @@ import android.view.View;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.LatteDelegate;
-
-import butterknife.BindView;
 
 /**
  * Created by 傅令杰
  */
 
 public class GoodsInfoDelegate extends LatteDelegate {
-
-    @BindView(R2.id.tv_goods_info_title)
-    AppCompatTextView mGoodsInfoTitle = null;
-    @BindView(R2.id.tv_goods_info_desc)
-    AppCompatTextView mGoodsInfoDesc = null;
-    @BindView(R2.id.tv_goods_info_price)
-    AppCompatTextView mGoodsInfoPrice = null;
 
     private static final String ARG_GOODS_DATA = "ARG_GOODS_DATA";
     private JSONObject mData = null;
@@ -39,8 +29,11 @@ public class GoodsInfoDelegate extends LatteDelegate {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bundle args = getArguments();
-        final String goodsData = args.getString(ARG_GOODS_DATA);
-        mData = JSON.parseObject(goodsData);
+        final String goodsData;
+        if (args != null) {
+            goodsData = args.getString(ARG_GOODS_DATA);
+            mData = JSON.parseObject(goodsData);
+        }
     }
 
     public static GoodsInfoDelegate create(String goodsInfo) {
@@ -53,11 +46,14 @@ public class GoodsInfoDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        final AppCompatTextView goodsInfoTitle = $(R.id.tv_goods_info_title);
+        final AppCompatTextView goodsInfoDesc = $(R.id.tv_goods_info_desc);
+        final AppCompatTextView goodsInfoPrice = $(R.id.tv_goods_info_price);
         final String name = mData.getString("name");
         final String desc = mData.getString("description");
         final double price = mData.getDouble("price");
-        mGoodsInfoTitle.setText(name);
-        mGoodsInfoDesc.setText(desc);
-        mGoodsInfoPrice.setText(String.valueOf(price));
+        goodsInfoTitle.setText(name);
+        goodsInfoDesc.setText(desc);
+        goodsInfoPrice.setText(String.valueOf(price));
     }
 }

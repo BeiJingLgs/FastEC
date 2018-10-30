@@ -14,7 +14,6 @@ import com.blankj.utilcode.util.StringUtils;
 import com.choices.divider.Divider;
 import com.choices.divider.DividerItemDecoration;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
@@ -24,22 +23,15 @@ import com.flj.latte.util.storage.LattePreference;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * Created by 傅令杰
  */
 
 public class SearchDelegate extends LatteDelegate {
 
-    @BindView(R2.id.rv_search)
-    RecyclerView mRecyclerView = null;
-    @BindView(R2.id.et_search_view)
-    AppCompatEditText mSearchEdit = null;
+    private AppCompatEditText mSearchEdit = null;
 
-    @OnClick(R2.id.tv_top_search)
-    void onCliclSearch() {
+    void onClickSearch() {
 
         RestClient.builder()
                 .url("search.php?key=")
@@ -56,11 +48,6 @@ public class SearchDelegate extends LatteDelegate {
                 })
                 .build()
                 .get();
-    }
-
-    @OnClick(R2.id.icon_top_search_back)
-    void onClickBack() {
-        getSupportDelegate().pop();
     }
 
     @SuppressWarnings("unchecked")
@@ -83,12 +70,29 @@ public class SearchDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        final RecyclerView recyclerView = $(R.id.rv_search);
+        mSearchEdit = $(R.id.et_search_view);
+
+        $(R.id.tv_top_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickSearch();
+            }
+        });
+
+        $(R.id.icon_top_search_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportDelegate().pop();
+            }
+        });
+
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutManager(manager);
 
         final List<MultipleItemEntity> data = new SearchDataConverter().convert();
         final SearchAdapter adapter = new SearchAdapter(data);
-        mRecyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         final DividerItemDecoration itemDecoration = new DividerItemDecoration();
         itemDecoration.setDividerLookup(new DividerItemDecoration.DividerLookup() {
@@ -107,7 +111,7 @@ public class SearchDelegate extends LatteDelegate {
             }
         });
 
-        mRecyclerView.addItemDecoration(itemDecoration);
+        recyclerView.addItemDecoration(itemDecoration);
     }
 
     @Override

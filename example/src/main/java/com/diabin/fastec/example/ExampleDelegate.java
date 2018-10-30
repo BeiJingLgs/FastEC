@@ -11,8 +11,6 @@ import com.flj.latte.net.callback.IError;
 import com.flj.latte.net.callback.IFailure;
 import com.flj.latte.net.callback.ISuccess;
 
-import butterknife.OnClick;
-
 /**
  * Created by 傅令杰 on 2017/4/2
  */
@@ -24,7 +22,6 @@ public class ExampleDelegate extends LatteDelegate {
         return com.diabin.fastec.example.R.layout.delegate_example;
     }
 
-    @OnClick(com.diabin.fastec.example.R.id.btn_test)
     void onClickTest() {
         testWX();
 
@@ -60,6 +57,12 @@ public class ExampleDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
 //        testRestClient();
+        $(R.id.btn_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickTest();
+            }
+        });
     }
 
     private void testWX() {

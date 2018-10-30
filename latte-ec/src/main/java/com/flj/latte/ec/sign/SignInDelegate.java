@@ -9,29 +9,23 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
-import com.flj.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
+import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.util.log.LatteLogger;
 import com.flj.latte.wechat.LatteWeChat;
 import com.flj.latte.wechat.callbacks.IWeChatSignInCallback;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by 傅令杰 on 2017/4/22
  */
 
-public class SignInDelegate extends LatteDelegate {
+public class SignInDelegate extends LatteDelegate implements View.OnClickListener {
 
-    @BindView(R2.id.edit_sign_in_email)
-    TextInputEditText mEmail = null;
-    @BindView(R2.id.edit_sign_in_password)
-    TextInputEditText mPassword = null;
-
+    private TextInputEditText mEmail = null;
+    private TextInputEditText mPassword = null;
     private ISignListener mISignListener = null;
 
     @Override
@@ -42,8 +36,7 @@ public class SignInDelegate extends LatteDelegate {
         }
     }
 
-    @OnClick(R2.id.btn_sign_in)
-    void onClickSignIn() {
+    private void onClickSignIn() {
         if (checkForm()) {
             RestClient.builder()
                     .url("http://192.168.56.1:8080/RestDataServer/api/user_profile.php")
@@ -61,8 +54,7 @@ public class SignInDelegate extends LatteDelegate {
         }
     }
 
-    @OnClick(R2.id.icon_sign_in_wechat)
-    void onClickWeChat() {
+    private void onClickWeChat() {
         LatteWeChat
                 .getInstance()
                 .onSignSuccess(new IWeChatSignInCallback() {
@@ -74,8 +66,7 @@ public class SignInDelegate extends LatteDelegate {
                 .signIn();
     }
 
-    @OnClick(R2.id.tv_link_sign_up)
-    void onClickLink() {
+    private void onClickLink() {
         getSupportDelegate().start(new SignUpDelegate());
     }
 
@@ -109,6 +100,23 @@ public class SignInDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mEmail = $(R.id.edit_sign_in_email);
+        mPassword = $(R.id.edit_sign_in_password);
+        $(R.id.btn_sign_in).setOnClickListener(this);
+        $(R.id.tv_link_sign_up).setOnClickListener(this);
+        $(R.id.icon_sign_in_wechat).setOnClickListener(this);
+    }
 
+
+    @Override
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i == R.id.btn_sign_in) {
+            onClickSignIn();
+        } else if (i == R.id.tv_link_sign_up) {
+            onClickLink();
+        } else if (i == R.id.icon_sign_in_wechat) {
+            onClickWeChat();
+        }
     }
 }

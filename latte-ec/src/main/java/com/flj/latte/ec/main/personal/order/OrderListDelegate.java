@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.ec.main.personal.PersonalDelegate;
 import com.flj.latte.net.RestClient;
@@ -16,8 +15,6 @@ import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.ui.recycler.MultipleItemEntity;
 
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * Created by 傅令杰
@@ -27,8 +24,7 @@ public class OrderListDelegate extends LatteDelegate {
 
     private String mType = null;
 
-    @BindView(R2.id.rv_order_list)
-    RecyclerView mRecyclerView = null;
+    private RecyclerView mRecyclerView = null;
 
     @Override
     public Object setLayout() {
@@ -39,11 +35,14 @@ public class OrderListDelegate extends LatteDelegate {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bundle args = getArguments();
-        mType = args.getString(PersonalDelegate.ORDER_TYPE);
+        if (args != null) {
+            mType = args.getString(PersonalDelegate.ORDER_TYPE);
+        }
     }
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mRecyclerView = $(R.id.rv_order_list);
     }
 
     @Override

@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.ec.main.personal.list.ListAdapter;
 import com.flj.latte.ec.main.personal.list.ListBean;
@@ -18,16 +17,11 @@ import com.flj.latte.ec.main.personal.settings.NameDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * Created by 傅令杰
  */
 
 public class UserProfileDelegate extends LatteDelegate {
-
-    @BindView(R2.id.rv_user_profile)
-    RecyclerView mRecyclerView = null;
 
     @Override
     public Object setLayout() {
@@ -36,6 +30,9 @@ public class UserProfileDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+
+        final RecyclerView recyclerView = $(R.id.rv_user_profile);
+
         final ListBean image = new ListBean.Builder()
                 .setItemType(ListItemType.ITEM_AVATAR)
                 .setId(1)
@@ -72,9 +69,9 @@ public class UserProfileDelegate extends LatteDelegate {
 
         //设置RecyclerView
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutManager(manager);
         final ListAdapter adapter = new ListAdapter(data);
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnItemTouchListener(new UserProfileClickListener(this));
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new UserProfileClickListener(this));
     }
 }

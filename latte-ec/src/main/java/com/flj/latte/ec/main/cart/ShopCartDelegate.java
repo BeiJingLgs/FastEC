@@ -1,5 +1,6 @@
 package com.flj.latte.ec.main.cart;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.bottom.BottomItemDelegate;
 import com.flj.latte.ec.main.EcBottomDelegate;
 import com.flj.latte.ec.pay.FastPay;
@@ -29,14 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * Created by 傅令杰
  */
 
-public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, ICartItemListener, IAlPayResultListener {
+public class ShopCartDelegate extends BottomItemDelegate implements View.OnClickListener, ISuccess, ICartItemListener, IAlPayResultListener {
 
     private ShopCartAdapter mAdapter = null;
     //购物车数量标记
@@ -44,21 +41,19 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
     private int mTotalCount = 0;
     private double mTotalPrice = 0.00;
 
-    @BindView(R2.id.rv_shop_cart)
-    RecyclerView mRecyclerView = null;
-    @BindView(R2.id.icon_shop_cart_select_all)
-    IconTextView mIconSelectAll = null;
-    @BindView(R2.id.stub_no_item)
-    ViewStubCompat mStubNoItem = null;
-    @BindView(R2.id.tv_shop_cart_total_price)
-    AppCompatTextView mTvTotalPrice = null;
+    private RecyclerView mRecyclerView = null;
+    private IconTextView mIconSelectAll = null;
+    private ViewStubCompat mStubNoItem = null;
+    private AppCompatTextView mTvTotalPrice = null;
 
-    @OnClick(R2.id.icon_shop_cart_select_all)
     void onClickSelectAll() {
         final int tag = (int) mIconSelectAll.getTag();
         if (tag == 0) {
-            mIconSelectAll.setTextColor
-                    (ContextCompat.getColor(getContext(), R.color.app_main));
+            final Context context = getContext();
+            if (context != null) {
+                mIconSelectAll.setTextColor
+                        (ContextCompat.getColor(context, R.color.app_main));
+            }
             mIconSelectAll.setTag(1);
             mAdapter.setIsSelectedAll(true);
             //更新RecyclerView的显示状态
@@ -71,7 +66,6 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
         }
     }
 
-    @OnClick(R2.id.tv_top_shop_cart_remove_selected)
     void onClickRemoveSelectedItem() {
         final List<MultipleItemEntity> data = mAdapter.getData();
         //要删除的数据
@@ -100,16 +94,10 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
         checkItemCount();
     }
 
-    @OnClick(R2.id.tv_top_shop_cart_clear)
     void onClickClear() {
         mAdapter.getData().clear();
         mAdapter.notifyDataSetChanged();
         checkItemCount();
-    }
-
-    @OnClick(R2.id.tv_shop_cart_pay)
-    void onClickPay() {
-        createOrder();
     }
 
     //创建订单，注意，和支付是没有关系的
@@ -144,7 +132,7 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
         if (count == 0) {
             final View stubView = mStubNoItem.inflate();
             final AppCompatTextView tvToBuy =
-                    (AppCompatTextView) stubView.findViewById(R.id.tv_stub_to_buy);
+                    stubView.findViewById(R.id.tv_stub_to_buy);
             tvToBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -172,7 +160,15 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mRecyclerView = $(R.id.rv_shop_cart);
+        mIconSelectAll = $(R.id.icon_shop_cart_select_all);
+        mStubNoItem = $(R.id.stub_no_item);
+        mTvTotalPrice = $(R.id.tv_shop_cart_total_price);
         mIconSelectAll.setTag(0);
+        $(R.id.icon_shop_cart_select_all).setOnClickListener(this);
+        $(R.id.tv_top_shop_cart_remove_selected).setOnClickListener(this);
+        $(R.id.tv_top_shop_cart_clear).setOnClickListener(this);
+        $(R.id.tv_shop_cart_pay).setOnClickListener(this);
     }
 
     @Override
@@ -231,5 +227,23 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
     @Override
     public void onPayConnectError() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        int i = view.getId();
+        if (i == R.id.icon_shop_cart_select_all) {
+            onClickSelectAll();
+
+        } else if (i == R.id.tv_top_shop_cart_remove_selected) {
+            onClickRemoveSelectedItem();
+
+        } else if (i == R.id.tv_top_shop_cart_clear) {
+            onClickClear();
+
+        } else if (i == R.id.tv_shop_cart_pay) {
+            createOrder();
+
+        }
     }
 }

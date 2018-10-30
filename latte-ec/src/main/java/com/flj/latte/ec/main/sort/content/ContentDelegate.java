@@ -7,15 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
-import com.flj.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
+import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
 
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * Created by 傅令杰
@@ -27,8 +24,7 @@ public class ContentDelegate extends LatteDelegate {
     private int mContentId = -1;
     private List<SectionBean> mData = null;
 
-    @BindView(R2.id.rv_list_content)
-    RecyclerView mRecyclerView = null;
+    private RecyclerView mRecyclerView = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +67,7 @@ public class ContentDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mRecyclerView = $(R.id.rv_list_content);
         final StaggeredGridLayoutManager manager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);

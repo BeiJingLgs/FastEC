@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
 import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
@@ -17,16 +16,13 @@ import com.flj.latte.util.log.LatteLogger;
 
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * Created by 傅令杰
  */
 
 public class AddressDelegate extends LatteDelegate implements ISuccess {
 
-    @BindView(R2.id.rv_address)
-    RecyclerView mRecyclerView = null;
+    private RecyclerView mRecyclerView = null;
 
     @Override
     public Object setLayout() {
@@ -35,6 +31,8 @@ public class AddressDelegate extends LatteDelegate implements ISuccess {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mRecyclerView = $(R.id.rv_address);
+
         RestClient.builder()
                 .url("address.php")
                 .loader(getContext())

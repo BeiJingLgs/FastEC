@@ -7,9 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.flj.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
+import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.ec.main.sort.SortDelegate;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
@@ -17,7 +16,6 @@ import com.flj.latte.ui.recycler.MultipleItemEntity;
 
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * Created by 傅令杰
@@ -25,7 +23,6 @@ import butterknife.BindView;
 
 public class VerticalListDelegate extends LatteDelegate {
 
-    @BindView(R2.id.rv_vertical_menu_list)
     RecyclerView mRecyclerView = null;
 
     @Override
@@ -42,6 +39,7 @@ public class VerticalListDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mRecyclerView = $(R.id.rv_vertical_menu_list);
         initRecyclerView();
     }
 

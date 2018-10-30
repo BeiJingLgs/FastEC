@@ -8,15 +8,11 @@ import android.support.design.widget.TextInputEditText;
 import android.util.Patterns;
 import android.view.View;
 
-import com.flj.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.R;
-import com.diabin.latte.ec.R2;
+import com.flj.latte.delegates.LatteDelegate;
 import com.flj.latte.net.RestClient;
 import com.flj.latte.net.callback.ISuccess;
 import com.flj.latte.util.log.LatteLogger;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by 傅令杰 on 2017/4/22
@@ -24,16 +20,11 @@ import butterknife.OnClick;
 
 public class SignUpDelegate extends LatteDelegate {
 
-    @BindView(R2.id.edit_sign_up_name)
-    TextInputEditText mName = null;
-    @BindView(R2.id.edit_sign_up_email)
-    TextInputEditText mEmail = null;
-    @BindView(R2.id.edit_sign_up_phone)
-    TextInputEditText mPhone = null;
-    @BindView(R2.id.edit_sign_up_password)
-    TextInputEditText mPassword = null;
-    @BindView(R2.id.edit_sign_up_re_password)
-    TextInputEditText mRePassword = null;
+    private TextInputEditText mName = null;
+    private TextInputEditText mEmail = null;
+    private TextInputEditText mPhone = null;
+    private TextInputEditText mPassword = null;
+    private TextInputEditText mRePassword = null;
 
     private ISignListener mISignListener = null;
 
@@ -45,8 +36,7 @@ public class SignUpDelegate extends LatteDelegate {
         }
     }
 
-    @OnClick(R2.id.btn_sign_up)
-    void onClickSignUp() {
+    private void onClickSignUp() {
         if (checkForm()) {
             RestClient.builder()
                     .url("http://192.168.56.1:8080/RestDataServer/api/user_profile.php")
@@ -66,8 +56,7 @@ public class SignUpDelegate extends LatteDelegate {
         }
     }
 
-    @OnClick(R2.id.tv_link_sign_in)
-    void onClickLink() {
+    private void onClickLink() {
         getSupportDelegate().start(new SignInDelegate());
     }
 
@@ -125,6 +114,24 @@ public class SignUpDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
+        mName = $(R.id.edit_sign_up_name);
+        mEmail = $(R.id.edit_sign_up_email);
+        mPhone = $(R.id.edit_sign_up_phone);
+        mPassword = $(R.id.edit_sign_up_password);
+        mRePassword = $(R.id.edit_sign_up_re_password);
 
+        $(R.id.btn_sign_up).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickSignUp();
+            }
+        });
+
+        $(R.id.tv_link_sign_in).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickLink();
+            }
+        });
     }
 }
